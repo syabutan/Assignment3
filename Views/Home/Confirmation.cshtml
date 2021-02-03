@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Thank you for information about " + Model.Title + "!";
+}
+
+@model Assignment3.Models.MovieInfo
+
+<!--Confirmation page which is displayed after the user input information-->
+<div class="text-center">
+    <!--If the title is "Independence day", then let the user know the information has been excluded -->
+    @if (Model.Title.ToUpper() == "INDEPENDENCE DAY")
+    {
+        @: "Independence Day" beats "Rocky IV" as the "Most American Movie Ever Made" which is obviously not true!
+        @Html.Raw("<br/>")
+        @: "Independence Day" has been excluded from the collection:(
+    }
+    else
+    {
+        @: The movie's information is successfully registered:)
+    }
+</div>
+<br />
+<br />
+<br />
+<!--Link to the movie list-->
+<div class="text-center">
+    Click <a asp-action="MovieCollection">here</a> to see Movie Collection
+</div>
