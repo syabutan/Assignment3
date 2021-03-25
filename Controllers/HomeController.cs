@@ -13,9 +13,15 @@ namespace Assignment3.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private MovieDbContext context { get; set; }
+
+        private iMovieRepository _repository;
+
+        public HomeController(ILogger<HomeController> logger, iMovieRepository repository, MovieDbContext con)
         {
             _logger = logger;
+            _repository = repository;
+            context = con;
         }
 
         public IActionResult Index()
@@ -35,21 +41,29 @@ namespace Assignment3.Controllers
         }
 
         [HttpPost]
-        public IActionResult Movies(MovieInfo info)
+        public IActionResult Movies(MovieInfo movieInfo)
         {
             if (ModelState.IsValid)
             {
-                TempStorage.AddMovieInfo(info);
-                return View("Confirmation", info);
+                context.Movies.Add(movieInfo);
+                context.SaveChanges();
             }
-            else
-            {
-                return View();
-            }
+            return View("Confirmation", movieInfo);
+        }
+
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Edit(MovieInfo movieInfo)
+        {
+            return View();
         }
         public IActionResult MovieCollection()
         {            
-            return View(TempStorage.Infos);
+            return View(context.Movies);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
